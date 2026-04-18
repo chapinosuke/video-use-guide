@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>video-use 導入ガイド｜Mac・初心者向け</title>
+<style>
+  :root {
+    --primary: #FFD400;        /* リベ大イエロー */
+    --primary-dark: #F5B800;
+    --accent: #0B2A5B;         /* ネイビー */
+    --accent-light: #163A7A;
+    --bg: #FFFBEA;             /* 薄い黄 */
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-soft: #3a3a3a;
+    --ink-mute: #6b6b6b;
+    --line: #f0e6b8;
+    --code-bg: #0B2A5B;
+    --code-ink: #FFF8D1;
+    --tip-bg: #FFF8D1;
+    --tip-border: #FFD400;
+    --warn-bg: #FFE8D1;
+    --warn-border: #FF8A00;
+    --info-bg: #E8EEF9;
+    --info-border: #0B2A5B;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.75;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hero {
+    background: var(--primary);
+    color: var(--accent);
+    padding: 72px 24px 96px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 6px solid var(--accent);
+  }
+  .hero::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(255,255,255,0.35) 0%, transparent 38%),
+      radial-gradient(circle at 85% 75%, rgba(255,255,255,0.25) 0%, transparent 38%);
+    pointer-events: none;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 32px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--accent) 0 12px,
+      var(--primary-dark) 12px 24px
+    );
+    opacity: 0.15;
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; max-width: 860px; margin: 0 auto; z-index: 1; }
+  .hero .eyebrow {
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+  }
+  .hero h1 {
+    font-size: clamp(28px, 4.5vw, 46px);
+    margin: 0 0 18px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--accent);
+    text-shadow: 3px 3px 0 rgba(255,255,255,0.5);
+  }
+  .hero p {
+    font-size: clamp(15px, 1.8vw, 18px);
+    max-width: 680px;
+    margin: 0 auto;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .hero-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--surface);
+    color: var(--accent);
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 2px solid var(--accent);
+    box-shadow: 0 3px 0 var(--accent);
+  }
+
+  .hero-cta {
+    margin-top: 28px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .hero-cta a {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--primary);
+    color: var(--accent);
+    padding: 14px 28px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 900;
+    text-decoration: none;
+    border: 3px solid var(--accent);
+    box-shadow: 0 5px 0 var(--accent);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .hero-cta a:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 var(--accent);
+  }
+  .hero-cta a.secondary {
+    background: var(--surface);
+  }
+  @media print {
+    .hero-cta { display: none; }
+  }
+
+  main {
+    max-width: 860px;
+    margin: -48px auto 80px;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 6px 0 var(--accent);
+    margin-bottom: 32px;
+    border: 3px solid var(--accent);
+  }
+
+  .intro-video {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 20px;
+    padding: 28px 32px 32px;
+    margin-bottom: 32px;
+    box-shadow: 0 8px 0 rgba(0,0,0,0.12);
+    border: 4px solid var(--primary);
+  }
+  .intro-video .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+  .intro-video h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--primary);
+  }
+  .intro-video p {
+    margin: 0 0 18px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #fff;
+  }
+  .intro-video .video-wrap {
+    border-radius: 14px;
+    overflow: hidden;
+    border: 4px solid var(--primary);
+    box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+    background: #000;
+  }
+  .intro-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .intro-video .video-note {
+    margin: 14px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.78);
+    text-align: center;
+  }
+  @media print {
+    .intro-video { display: none; }
+  }
+  .summary-card h2 {
+    margin: 0 0 16px;
+    font-size: 21px;
+    font-weight: 900;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .summary-card h2::before {
+    content: "";
+    display: inline-block;
+    width: 8px; height: 24px;
+    background: var(--primary);
+    border-radius: 3px;
+    border: 2px solid var(--accent);
+  }
+  .summary-card p { margin: 0 0 8px; color: var(--ink-soft); }
+
+  .requirements {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .req-item {
+    background: var(--bg);
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .req-icon {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    background: var(--primary);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .glossary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .glossary-item {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .gloss-term {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--primary-dark);
+    margin-bottom: 4px;
+  }
+  .gloss-def {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .gloss-def em {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: var(--ink-mute);
+    font-style: normal;
+  }
+
+  .step {
+    background: var(--surface);
+    border-radius: 20px;
+    margin-bottom: 22px;
+    border: 3px solid var(--accent);
+    overflow: hidden;
+    box-shadow: 0 6px 0 var(--accent);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .step:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 9px 0 var(--accent);
+  }
+  .step-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 28px;
+    background: var(--primary);
+    border-bottom: 3px solid var(--accent);
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 58px; height: 58px;
+    border-radius: 14px;
+    background: var(--accent);
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--surface);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  }
+  .step-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .step-subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--accent-light);
+    font-weight: 600;
+  }
+  .step-body {
+    padding: 24px 28px;
+  }
+  .step-body p { margin: 0 0 14px; color: var(--ink-soft); }
+  .step-body p:last-child { margin-bottom: 0; }
+
+  pre {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 12px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.65;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    position: relative;
+  }
+  pre::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 8px; right: 12px;
+    font-size: 11px;
+    color: #94a3b8;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.92em;
+  }
+  p code, li code {
+    background: var(--primary);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--accent);
+    font-size: 0.88em;
+    font-weight: 700;
+    border: 1px solid var(--accent);
+  }
+
+  .callout {
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 16px 0;
+    border-left: 4px solid;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .callout-icon {
+    flex-shrink: 0;
+    font-size: 20px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .callout-body { flex: 1; font-size: 14px; line-height: 1.7; }
+  .callout-body strong { display: block; margin-bottom: 4px; font-size: 14px; }
+  .callout.tip { background: var(--tip-bg); border-color: var(--primary-dark); color: var(--accent); }
+  .callout.warn { background: var(--warn-bg); border-color: var(--warn-border); color: #7a3a00; }
+  .callout.info { background: var(--info-bg); border-color: var(--info-border); color: var(--accent); }
+
+  .section-title {
+    margin: 56px 0 28px;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    text-align: center;
+    position: relative;
+    padding-bottom: 14px;
+  }
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 80px; height: 6px;
+    background: var(--primary);
+    border-radius: 3px;
+  }
+  .section-title span {
+    background: var(--primary);
+    padding: 2px 10px;
+    border-radius: 6px;
+    color: var(--accent);
+  }
+
+  .faq {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 22px 26px;
+    margin-bottom: 14px;
+    border: 2px solid var(--accent);
+    box-shadow: 0 4px 0 var(--accent);
+  }
+  .faq-q {
+    font-weight: 800;
+    font-size: 16px;
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent);
+  }
+  .faq-q::before {
+    content: "Q";
+    display: inline-flex;
+    width: 28px; height: 28px;
+    background: var(--primary);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .faq-a {
+    margin: 0;
+    padding-left: 36px;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+
+  .checklist {
+    background: var(--primary);
+    border-radius: 20px;
+    padding: 32px;
+    margin-top: 32px;
+    border: 3px solid var(--accent);
+    box-shadow: 0 6px 0 var(--accent);
+  }
+  .checklist h3 {
+    margin: 0 0 18px;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .checklist ol {
+    padding-left: 0;
+    list-style: none;
+    counter-reset: chk;
+    margin: 0;
+  }
+  .checklist li {
+    counter-increment: chk;
+    padding: 12px 0 12px 44px;
+    position: relative;
+    border-bottom: 2px dashed rgba(11, 42, 91, 0.2);
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: counter(chk);
+    position: absolute;
+    left: 0; top: 10px;
+    width: 30px; height: 30px;
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 50%;
+    font-weight: 900;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--accent);
+    border-top: 6px solid var(--primary);
+  }
+
+  /* 励ましメッセージ（ヒーロー直下） */
+  .cheer-banner {
+    background: var(--accent);
+    color: var(--primary);
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
+    border: 4px solid var(--primary);
+    box-shadow: 0 6px 0 var(--primary-dark);
+    position: relative;
+  }
+  .cheer-banner .tag {
+    display: inline-block;
+    background: var(--primary);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+  .cheer-banner h2 {
+    margin: 0 0 12px;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1.4;
+  }
+  .cheer-banner p {
+    margin: 0 0 10px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #FFF8D1;
+  }
+  .cheer-banner p:last-child { margin-bottom: 0; }
+  .cheer-banner strong { color: var(--primary); font-weight: 900; }
+
+  /* 最後の応援メッセージ */
+  .final-cheer {
+    margin-top: 48px;
+    text-align: center;
+    padding: 40px 28px;
+    background: var(--primary);
+    border: 4px solid var(--accent);
+    border-radius: 20px;
+    box-shadow: 0 8px 0 var(--accent);
+  }
+  .final-cheer h3 {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--accent);
+    margin: 0 0 14px;
+    line-height: 1.4;
+  }
+  .final-cheer p {
+    font-size: 15px;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 auto;
+    max-width: 560px;
+    line-height: 1.8;
+  }
+
+  /* Print styles for PDF */
+  @media print {
+    body { background: white; font-size: 11pt; }
+    .hero {
+      padding: 40px 24px;
+      page-break-after: avoid;
+    }
+    .hero h1 { font-size: 26pt; }
+    main { margin-top: 24px; }
+    .step {
+      page-break-inside: avoid;
+      box-shadow: none;
+      border: 2px solid var(--accent);
+    }
+    .cheer-banner, .final-cheer, .checklist, .summary-card {
+      page-break-inside: avoid;
+      box-shadow: none;
+    }
+    .hero { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .step:hover { transform: none; box-shadow: none; }
+    pre {
+      font-size: 10pt;
+      page-break-inside: avoid;
+    }
+    .section-title { page-break-after: avoid; }
+    .checklist { page-break-inside: avoid; }
+    a { color: var(--primary); text-decoration: none; }
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">めげずにやってみよう！</span>
+    <h1>video-use 導入ガイド<br>— Claude Code で動画編集 —</h1>
+    <p>初めてでも大丈夫。わからなくなったら <strong>Claude Code に画面のスクショを貼って聞けばOK</strong>。落ち着いて一歩ずつ進めば、必ずできるようになります！</p>
+    <div class="hero-meta">
+      <span>⏱ 所要時間 30〜60分</span>
+      <span>💻 Mac ユーザー向け</span>
+      <span>🎓 初心者歓迎</span>
+      <span>💪 コピペで進む</span>
+    </div>
+    <div class="hero-cta">
+      <a href="video-use-guide.pdf" download>📄 PDFをダウンロード</a>
+      <a href="#step1" class="secondary">🚀 さっそく始める</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="intro-video">
+    <span class="tag">🎬 まずはこの動画で全体像をつかもう</span>
+    <h2>1分半で分かる video-use</h2>
+    <p>文章を読む前に、まずは動画で <strong>video-use が何をしてくれるスキルなのか</strong> をサクッとチェック！</p>
+    <div class="video-wrap">
+      <video controls preload="metadata" poster="" playsinline>
+        <source src="video-use-intro.mp4" type="video/mp4">
+        お使いのブラウザは動画タグに対応していません。<a href="video-use-intro.mp4">こちらからダウンロード</a>してください。
+      </video>
+    </div>
+    <p class="video-note">※ この解説動画は <strong>Remotion</strong> で制作しています（video-use の出力ではありません）。</p>
+  </section>
+
+  <section class="cheer-banner">
+    <span class="tag">📖 はじめに読んでほしい</span>
+    <h2>わからなくても、焦らなくていいよ！</h2>
+    <p>初めてターミナルを触る人にとって、このガイドは正直「むずかしそう」に見えるかもしれません。でも大丈夫。<strong>途中でつまづいたら Claude Code にそのまま聞けばいい</strong>んです。</p>
+    <p>エラーが出たら画面を<strong>スクショして Claude Code に貼る</strong>だけで、「ここをこうしてね」と日本語で教えてくれます。一人で抱え込まず、落ち着いて一歩ずつ進めていきましょう。</p>
+    <p>💡 <strong>小さな一歩の積み重ねが大きな自由をつくる</strong>。めげずにやってみよう！</p>
+  </section>
+
+  <section class="summary-card">
+    <h2>この資料について</h2>
+    <p><code>video-use</code> は単体の CLI ツールというより、<strong>Claude Code のスキル</strong>として動作します。GitHub から取得して Python 環境を整え、<code>~/.claude/skills</code> に登録。素材フォルダを Claude Code で開いて、日本語で編集指示を出せば動きます。</p>
+
+    <h2 style="margin-top: 28px;">必要なもの</h2>
+    <div class="requirements">
+      <div class="req-item"><div class="req-icon">🖥</div>Mac</div>
+      <div class="req-item"><div class="req-icon">🍺</div>Homebrew</div>
+      <div class="req-item"><div class="req-icon">🔧</div>Git</div>
+      <div class="req-item"><div class="req-icon">🐍</div>Python 3.10+</div>
+      <div class="req-item"><div class="req-icon">👤</div>Claude アカウント</div>
+      <div class="req-item"><div class="req-icon">🔑</div>API クレジット & キー</div>
+    </div>
+    <div class="callout info" style="margin-top: 16px;">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-body">
+        <strong>Claude のサブスクと API は別枠です</strong>
+        <code>video-use</code> は Anthropic API を使うため、Console 側でクレジット購入と API キー発行が必須です。
+      </div>
+    </div>
+  </section>
+
+  <section class="summary-card">
+    <h2>はじめての方へ｜ミニ用語集</h2>
+    <p>このガイドに出てくる用語を、初心者向けにざっくり一言で解説します。意味がわかれば作業中にビビりません。</p>
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="gloss-term">ターミナル</div>
+        <div class="gloss-def">Mac に最初から入っている黒い画面のアプリ。文字でPCに命令できます。<br><em>起動: Launchpad で「ターミナル」と検索</em></div>
+      </div>
+      <div class="glossary-item">
+        <div class="gloss-term">Homebrew (brew)</div>
+        <div class="gloss-def">Mac 用のソフト管理ツール。App Store のターミナル版みたいなもの。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="gloss-term">Python / pip</div>
+        <div class="gloss-def">プログラミング言語 Python と、その追加パーツを入れる道具 pip。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="gloss-term">仮想環境 (venv)</div>
+        <div class="gloss-def">プロジェクト専用の隔離部屋。他のソフトと喧嘩しないように分けておく仕組み。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="gloss-term">API / API キー</div>
+        <div class="gloss-def">外部サービスを呼び出す窓口。キーは「会員証」で、利用は従量課金です。</div>
+      </div>
+      <div class="glossary-item">
+        <div class="gloss-term">シンボリックリンク</div>
+        <div class="gloss-def">フォルダやファイルのショートカット。本体はそのままに「別名の入り口」を作る仕組み。</div>
+      </div>
+    </div>
+    <div class="callout tip" style="margin-top: 16px;">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>コマンドは「コピペ」でOK</strong>
+        一文字ずつ打つ必要はありません。灰色のコードブロックをコピーして、ターミナルに貼り付け→Enter で動きます。
+      </div>
+    </div>
+  </section>
+
+  <h2 class="section-title">10 ステップで <span>セットアップ</span></h2>
+
+  <!-- Step 1 -->
+  <div class="step" id="step1">
+    <div class="step-header">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">事前確認</div>
+        <div class="step-subtitle">Python と Git が入っているか確認</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>ターミナルで次のコマンドを実行し、バージョンを確認します。</p>
+      <pre data-label="bash"><code>python3 --version
+git --version</code></pre>
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body">
+          <strong>Python 3.10 以上が必須</strong>
+          3.9 系では後段でエラーになります。古いバージョンの場合は次のステップで 3.10 を入れましょう。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">リポジトリを取得</div>
+        <div class="step-subtitle">GitHub から clone</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>作業用フォルダを作り、公式リポジトリ <code>browser-use/video-use</code> を clone します。</p>
+      <pre data-label="bash"><code>mkdir -p ~/code
+cd ~/code
+git clone https://github.com/browser-use/video-use.git
+cd video-use</code></pre>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Python 3.10 と仮想環境</div>
+        <div class="step-subtitle">Homebrew で Python を入れて venv を作成</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Homebrew で Python 3.10 を入れ、<code>video-use</code> 専用の仮想環境を作ります。</p>
+      <pre data-label="bash"><code>brew install python@3.10
+cd ~/code/video-use
+python3.10 -m venv .venv
+source .venv/bin/activate
+python --version</code></pre>
+      <div class="callout tip">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body">
+          <strong>成功の目印</strong>
+          最後のコマンドで <code>Python 3.10.x</code> と表示されれば OK です。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">4</div>
+      <div>
+        <div class="step-title">video-use をインストール</div>
+        <div class="step-subtitle">pip install でセットアップ</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>リポジトリには <code>pyproject.toml</code> があるため、<code>pip install .</code> でインストールします。</p>
+      <pre data-label="bash"><code>cd ~/code/video-use
+pip install .</code></pre>
+      <div class="callout tip">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body">
+          <strong>成功の目印</strong>
+          <code>Successfully installed ... video-use-0.1.0</code> のような表示が出ます。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">5</div>
+      <div>
+        <div class="step-title">API クレジットを用意</div>
+        <div class="step-subtitle">Anthropic Console で購入とキー発行</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Anthropic Console では API 利用のためにクレジット購入が必要です。Claude のチャット契約とは <strong>別課金</strong> なので注意。</p>
+      <ol style="padding-left: 20px; color: var(--ink-soft);">
+        <li><a href="https://console.anthropic.com/" target="_blank">console.anthropic.com</a> にログイン</li>
+        <li>クレジット購入画面で <strong>USD 20 以上</strong> を選んで購入</li>
+        <li>「API Keys」画面で新しいキーを作成</li>
+        <li>表示された <code>sk-ant-...</code> のキーをコピー</li>
+      </ol>
+      <div class="callout warn">
+        <div class="callout-icon">🔒</div>
+        <div class="callout-body">
+          <strong>API キーは機密情報</strong>
+          SNS やチャットに貼らず、絶対に外部へ見せないでください。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">6</div>
+      <div>
+        <div class="step-title">API キーをセット</div>
+        <div class="step-subtitle">環境変数として export</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>仮想環境が有効なターミナルで、API キーを環境変数として設定します。</p>
+      <pre data-label="bash"><code>export ANTHROPIC_API_KEY="sk-ant-ここにAPIキーを貼る"</code></pre>
+      <div class="callout info">
+        <div class="callout-icon">ℹ️</div>
+        <div class="callout-body">
+          <strong>有効範囲は現在のターミナルのみ</strong>
+          永続化したい場合は <code>~/.zshrc</code> などに追記します。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">7</div>
+      <div>
+        <div class="step-title">Claude Code にスキル登録</div>
+        <div class="step-subtitle">シンボリックリンクを作成</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>公式 README 推奨の方法で、<code>video-use</code> をスキルディレクトリへリンクします。</p>
+      <pre data-label="bash"><code>cd ~/code/video-use
+mkdir -p ~/.claude/skills
+ln -s "$(pwd)" ~/.claude/skills/video-use</code></pre>
+      <p>これで Claude Code から <code>video-use</code> スキルを参照できます。</p>
+    </div>
+  </div>
+
+  <!-- Step 8 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">8</div>
+      <div>
+        <div class="step-title">素材フォルダを用意</div>
+        <div class="step-subtitle">編集したい動画を入れる</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>好きな場所にフォルダを作り、編集したい mp4 ファイルなどを入れます。</p>
+      <pre data-label="bash"><code>mkdir -p ~/Desktop/video-use-test</code></pre>
+      <p>このフォルダに素材動画をドラッグ＆ドロップで入れるだけで OK です。</p>
+    </div>
+  </div>
+
+  <!-- Step 9 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">9</div>
+      <div>
+        <div class="step-title">Claude Code で指示を出す</div>
+        <div class="step-subtitle">日本語で編集をお願いする</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>Claude Code で素材フォルダを開いたら、日本語でこう伝えるだけ。</p>
+      <pre data-label="prompt"><code>video-use スキルを使って、このフォルダ内の動画を
+1本の完成動画に編集してください。
+不要な間や言い淀みはカットして、テンポよく。
+まず編集方針を日本語で説明してから作業を始めてください。
+完成動画は edit/final.mp4 に出力してください。</code></pre>
+      <div class="callout tip">
+        <div class="callout-icon">🎉</div>
+        <div class="callout-body">
+          <strong>出力先は自動で作られます</strong>
+          素材フォルダ内に <code>edit/final.mp4</code> が生成されます。事前に output フォルダを作る必要はありません。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 10 -->
+  <div class="step">
+    <div class="step-header">
+      <div class="step-num">10</div>
+      <div>
+        <div class="step-title">ElevenLabs API キーを設定 <span style="font-size:12px;background:#fef3c7;color:#92400e;padding:3px 8px;border-radius:6px;margin-left:8px;font-weight:600;vertical-align:middle;">音声を使う場合</span></div>
+        <div class="step-subtitle">ナレーション生成など、音声合成を使う場合に必要</div>
+      </div>
+    </div>
+    <div class="step-body">
+      <p>編集指示を出したあと、<code>video-use</code> は <strong>ナレーション生成や音声合成のために ElevenLabs の API を使う</strong>ことがあります。その場合、Claude Code から ElevenLabs API キーの設定を求められます。</p>
+
+      <div class="callout info">
+        <div class="callout-icon">🎙</div>
+        <div class="callout-body">
+          <strong>ElevenLabs とは？</strong>
+          超リアルな音声を生成できる AI サービス。動画に自動でナレーションを乗せる用途で使われます。Anthropic と同じく <strong>別課金の API</strong> です。
+        </div>
+      </div>
+
+      <p><strong>手順</strong></p>
+      <ol style="padding-left: 20px; color: var(--ink-soft);">
+        <li><a href="https://elevenlabs.io/" target="_blank">elevenlabs.io</a> にアクセスしてアカウント作成</li>
+        <li>右上プロフィール → <strong>「API Keys」</strong> からキーを発行</li>
+        <li>無料枠もありますが、継続利用は有料プラン or クレジット購入が必要</li>
+        <li>発行されたキーをコピーし、ターミナルで環境変数に設定</li>
+      </ol>
+
+      <pre data-label="bash"><code>export ELEVENLABS_API_KEY="ここにElevenLabsのAPIキーを貼る"</code></pre>
+
+      <div class="callout tip">
+        <div class="callout-icon">💡</div>
+        <div class="callout-body">
+          <strong>両方セットしておくと楽</strong>
+          Anthropic と ElevenLabs のキーをまとめて <code>~/.zshrc</code> に書いておけば、ターミナルを開き直すたびに export する手間が省けます。
+        </div>
+      </div>
+
+      <pre data-label="~/.zshrc に追記する例"><code>export ANTHROPIC_API_KEY="sk-ant-..."
+export ELEVENLABS_API_KEY="..."</code></pre>
+
+      <div class="callout warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body">
+          <strong>音声を使わない編集だけなら不要</strong>
+          カット編集や繋ぎ合わせのみの場合は ElevenLabs の設定は求められません。必要になったタイミングで設定すればOKです。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section-title">よくある <span>つまずき</span></h2>
+
+  <div class="faq">
+    <p class="faq-q">Python 3.9 しか入っていない</p>
+    <p class="faq-a"><code>requires a different Python: 3.9.6 not in '&gt;=3.10'</code> のエラーが出ます。<strong>手順 3</strong> に戻り、Homebrew で <code>python@3.10</code> を入れて仮想環境を作り直してください。</p>
+  </div>
+
+  <div class="faq">
+    <p class="faq-q">requirements.txt が見つからない</p>
+    <p class="faq-a">このリポジトリは <code>pyproject.toml</code> ベースです。<code>pip install -r requirements.txt</code> ではなく、<strong><code>pip install .</code></strong> を使います。</p>
+  </div>
+
+  <div class="faq">
+    <p class="faq-q">video-use コマンドが見つからない</p>
+    <p class="faq-a">本質的な問題ではありません。<code>video-use</code> は単体 CLI ではなく、<strong>Claude Code のスキルとして呼び出す</strong>のが公式の使い方です。手順 7 のシンボリックリンクが正しく張れていれば OK です。</p>
+  </div>
+
+  <div class="faq">
+    <p class="faq-q">Claude の有料プランを契約しているのに API が使えない</p>
+    <p class="faq-a">Claude の通常利用と Anthropic API は<strong>完全に別課金</strong>です。Console でクレジットを購入しないと API キーの発行・利用ができません。</p>
+  </div>
+
+  <div class="checklist">
+    <h3>🚀 最短チェックリスト</h3>
+    <ol>
+      <li>GitHub から <code>video-use</code> を clone</li>
+      <li>Python 3.10 の仮想環境を作成</li>
+      <li><code>pip install .</code> でインストール</li>
+      <li>Anthropic Console でクレジット購入 + API キー発行</li>
+      <li><code>export ANTHROPIC_API_KEY="..."</code> を実行</li>
+      <li><code>ln -s "$(pwd)" ~/.claude/skills/video-use</code> でスキル登録</li>
+      <li>素材動画入りフォルダを Claude Code で開く</li>
+      <li>「video-use スキルで編集して」と日本語で指示</li>
+      <li>音声生成を使う場合は ElevenLabs API キーも <code>export</code></li>
+    </ol>
+  </div>
+
+  <section class="final-cheer">
+    <h3>大丈夫、一歩ずつで必ずできる！</h3>
+    <p>エラーが出ても、詰まっても、それは <strong>失敗ではなく「進んでいる証拠」</strong> です。わからなくなったら <strong>Claude Code に画面のスクショとエラー文を貼り付けて質問</strong>してみてください。日本語でやさしく教えてくれます。</p>
+    <p style="margin-top: 14px;">今日の小さな一歩が、明日の自由な動画制作につながる。<br><strong>焦らず、楽しみながら、やってみよう！</strong></p>
+  </section>
+
+</main>
+
+<footer>
+  <p>video-use 導入ガイド / Mac・初心者向け &nbsp;·&nbsp; written by chapinosuke</p>
+</footer>
+
+</body>
+</html>
